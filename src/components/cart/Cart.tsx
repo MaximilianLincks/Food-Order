@@ -6,11 +6,12 @@ export type cartProps = {
     onClose: () => void
 };
 
+export type order = {
+  meal: meal;
+  amount: number;
+}
+
 const Cart = (props: cartProps) => {
-  type order = {
-    meal: meal;
-    amount: number;
-  };
 
   const cartItems = [
     {
