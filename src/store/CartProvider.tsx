@@ -25,16 +25,17 @@ const defaultCartState = {
 //can break for orders with a count of < 0
 const cartReducer = (state: state, action: dispactchAction) => {
   if (action.type === "ADD") {
-
     const mealOrderFilter = (item: order) => {
-      return item.meal.id !== action.item.meal.id;
+      return item.meal.id === action.item.meal.id;
     };
 
     const itemOrderIndex = state.items.findIndex(mealOrderFilter);
+
     var newStateItems: order[];
 
     if (itemOrderIndex !== -1) {
       const newCount = state.items[itemOrderIndex].count + action.item.count;
+
       newStateItems = state.items
         .filter((item) => !mealOrderFilter(item))
         .concat({ meal: action.item.meal, count: newCount });
@@ -47,6 +48,33 @@ const cartReducer = (state: state, action: dispactchAction) => {
       items: newStateItems,
       totalAmount: newTotal,
     };
+  }
+  if (action.type === "REMOVE") {
+    const mealOrderFilter = (item: order) => {
+      return item.meal.id === action.id;
+    };
+
+    const itemIndex = state.items.findIndex(mealOrderFilter);
+    if (itemIndex === -1) {
+      //invalid state
+    } else {
+      const newCount = state.items[itemIndex].count - 1;
+      const otherItems = state.items.filter((item) => !mealOrderFilter(item));
+      if (newCount === 0) {
+        return {
+          items: otherItems,
+          totalAmount: state.totalAmount - state.items[itemIndex].meal.price,
+        };
+      } else {
+        return {
+          items: otherItems.concat({
+            ...state.items[itemIndex],
+            count: newCount,
+          }),
+          totalAmount: state.totalAmount - state.items[itemIndex].meal.price,
+        };
+      }
+    }
   }
   return defaultCartState;
 };
