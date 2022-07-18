@@ -8,7 +8,7 @@ export type cartProps = {
 
 export type order = {
   meal: meal;
-  amount: number;
+  count: number;
 }
 
 const Cart = (props: cartProps) => {
@@ -21,7 +21,7 @@ const Cart = (props: cartProps) => {
         description: "",
         price: 12.99,
       },
-      amount: 2,
+      count: 2,
     },
   ].map((item) => <li>{item.meal.name}</li>);
   return (
