@@ -1,3 +1,4 @@
+import React, { LegacyRef } from "react";
 import classes from "./styles/Input.module.css";
 
 export type inputFieled = {
@@ -12,13 +13,13 @@ export type inputFieled = {
     }
 }
 
-const Input = (props: inputFieled) => {
+const Input = React.forwardRef((props: inputFieled, ref: LegacyRef<HTMLInputElement>) => {
     return (
         <div className={classes.input}>
             <label htmlFor={props.input.id}>{props.label}</label>
-            <input {...props.input} />
+            <input ref={ref} {...props.input} />
         </div>
     );
-};
+});
 
 export default Input;
